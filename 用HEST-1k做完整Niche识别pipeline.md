@@ -1,3 +1,5 @@
+> 当前代码已更新为：标准 CARD 反卷积 → ISCHIA 组成聚类 → 生态位注释。原有 Leiden＋层次聚类保留为 `two_stage` 备选；以下内容保留早期设计。当前运行方法见 [运行说明](docs/run_niche_pipeline.md)，默认与备选配置分别为 [ISCHIA](configs/glioma_visium_mvp.yaml) 和 [两级聚类](configs/glioma_visium_two_stage_mvp.yaml)。
+
 可以。HEST-1k 很适合做你这个任务，因为它本身就是 **空间转录组 + H&E 全切片图像 + metadata** 的多模态数据集，可以支持从 Visium spot 表达、局部空间结构、病理图像三方面去定义 Niche。
 
 ## 1. HEST-1k 数据集基本构成
