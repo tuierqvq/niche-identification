@@ -86,8 +86,8 @@ def output_root(config: dict[str, Any]) -> Path:
         输出目录绝对路径。
 
     异常/边界:
-        若未配置 ``paths.output_root``，使用 ``outputs/hest_gbm_card_mvp``。
+        若未配置 ``paths.output_root``，使用 ``outputs/hest_gbm_card_ischia_mvp``。
     """
 
     paths = config.get("paths", {})
-    return resolve_path(config, paths.get("output_root", "outputs/hest_gbm_card_mvp"))  # type: ignore[return-value]
+    return resolve_path(config, paths.get("output_root", "outputs/hest_gbm_card_ischia_mvp"))  # type: ignore[return-value]

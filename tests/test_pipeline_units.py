@@ -166,7 +166,7 @@ def test_cluster_outputs_labels_when_leiden_available(tmp_path: Path) -> None:
         "_project_root": str(tmp_path),
         "paths": {"output_root": str(out_root), "manifest": str(manifest_path)},
         "features": {"spatial_k": 1},
-        "clustering": {"local_neighbors": 3, "local_resolution": 0.5, "global_niches": 2},
+        "clustering": {"method": "two_stage", "local_neighbors": 3, "local_resolution": 0.5, "global_niches": 2},
     }
     outputs = cluster_niches(config, manifest_path)
     labels = pd.read_csv(outputs["global_labels"])

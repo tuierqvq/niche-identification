@@ -107,7 +107,7 @@ def build_manifest(config: dict[str, Any], output_path: str | Path | None = None
     if output_path is None:
         output_path = resolve_path(config, config.get("paths", {}).get("manifest"))
     if output_path is None:
-        output_path = resolve_path(config, "outputs/hest_gbm_card_mvp/manifests/selected_samples.csv")
+        output_path = resolve_path(config, "outputs/hest_gbm_card_ischia_mvp/manifests/selected_samples.csv")
 
     output = Path(output_path)
     ensure_dir(output.parent)

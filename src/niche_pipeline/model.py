@@ -202,6 +202,10 @@ def _model_feature_columns(table: pd.DataFrame) -> list[str]:
         "spot_id",
         "local_niche",
         "global_niche",
+        "CompositionCluster_CC",
+        "ischia_spot_id",
+        # 聚类后、依赖标签的诊断量不能作为分类器输入。
+        "neighbor_agreement",
         "confidence",
         "confidence_reason",
     }

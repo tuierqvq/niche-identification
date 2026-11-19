@@ -20,9 +20,14 @@ huggingface_hub>=0.23
 xgboost>=2.0
 
 # Default deconvolution uses R/CARD (install separately; see docs).
+# Default ISCHIA composition clustering uses R/SeuratObject, Matrix and jsonlite.
 # Optional cell2location path: install a CUDA-compatible PyTorch build first
 # on GPU servers when the default wheel is not appropriate.
 cell2location>=0.1.4
+
+# Optional two-stage niche clustering backend
+igraph>=0.11
+leidenalg>=0.10
 
 # Development and smoke tests
 pytest>=8.0

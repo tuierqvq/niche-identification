@@ -48,7 +48,7 @@ def build_parser() -> argparse.ArgumentParser:
     _add_command(subparsers, "prepare-reference", "Validate scRNA-seq reference", _cmd_prepare_reference)
     _add_command(subparsers, "deconvolve", "Run CARD or cell2location deconvolution", _cmd_deconvolve)
     _add_command(subparsers, "build-features", "Build spot niche features", _cmd_build_features)
-    _add_command(subparsers, "cluster", "Cluster local/global niches", _cmd_cluster)
+    _add_command(subparsers, "cluster", "Identify niches with ISCHIA or optional two-stage clustering", _cmd_cluster)
     _add_command(subparsers, "annotate", "Write annotation tables", _cmd_annotate)
     _add_command(subparsers, "extract-patches", "Extract H&E patches and overlays", _cmd_extract_patches)
     _add_command(subparsers, "train-xgb", "Train XGBoost baseline", _cmd_train_xgb)

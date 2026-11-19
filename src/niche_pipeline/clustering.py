@@ -1,4 +1,4 @@
-"""Local 与 global Niche 聚类。"""
+"""生态位聚类入口：默认 ISCHIA，保留两级聚类作为备选。"""
 
 from __future__ import annotations
 
@@ -18,6 +18,19 @@ LOGGER = get_logger(__name__)
 
 
 def cluster_niches(config: dict[str, Any], manifest_path: str | Path | None = None) -> dict[str, Path]:
+    """按 clustering.method 选择 ISCHIA 或原有两级聚类，返回兼容的标签路径。"""
+
+    method = str(config.get("clustering", {}).get("method", "ischia")).lower()
+    if method == "ischia":
+        from .ischia import run_ischia
+
+        return run_ischia(config, manifest_path)
+    if method == "two_stage":
+        return cluster_two_stage_niches(config, manifest_path)
+    raise ValueError(f"Unsupported clustering.method={method!r}. Use 'ischia' or 'two_stage'.")
+
+
+def cluster_two_stage_niches(config: dict[str, Any], manifest_path: str | Path | None = None) -> dict[str, Path]:
     """执行单样本 local niche 聚类与跨样本 global 对齐。
 
     参数:

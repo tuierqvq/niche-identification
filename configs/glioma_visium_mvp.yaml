@@ -1,11 +1,11 @@
 project:
-  name: hest_gbm_card_mvp
+  name: hest_gbm_card_ischia_mvp
   random_seed: 42
 
 paths:
   data_root: HEST_data/hest_gbm_samples
-  output_root: outputs/hest_gbm_card_mvp
-  manifest: outputs/hest_gbm_card_mvp/manifests/selected_samples.csv
+  output_root: outputs/hest_gbm_card_ischia_mvp
+  manifest: outputs/hest_gbm_card_ischia_mvp/manifests/selected_samples.csv
 
 samples:
   - TENX30
@@ -67,6 +67,14 @@ features:
   gene_sets: {}
 
 clustering:
+  method: ischia
+  ischia:
+    rscript_bin: /data/newhome/yk192/miniconda3/bin/Rscript
+    r_script: scripts/run_ischia_clustering.R
+    n_clusters: 8
+    # 0 不生成 elbow 诊断图；设置正整数时调用上游 Composition.cluster.k。
+    elbow_max_k: 0
+  # 以下三个参数仅供备选 two_stage 后端使用。
   local_neighbors: 15
   local_resolution: 0.8
   global_niches: 8
