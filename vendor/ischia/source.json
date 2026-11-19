@@ -1,0 +1,10 @@
+{
+  "repository": "https://github.com/ati-lz/ISCHIA",
+  "commit": "1e50ce1eb1f4fe0855ca16a5fd3bfc7228697900",
+  "package_version": "1.0.0.0",
+  "path": "R/composition_clustering.R",
+  "sha256": "854de6a39e4d9575f7ff71f093217e911b01cec2165b18b21b7f375698a19b11",
+  "module": "composition_clustering.R",
+  "entry_point": "Composition.cluster",
+  "loading_mode": "source unchanged upstream module; bind stats::kmeans and SeuratObject::AddMetaData"
+}
