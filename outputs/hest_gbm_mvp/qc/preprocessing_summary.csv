@@ -1,0 +1,4 @@
+sample_id,spots_before,genes_before,spots_after,genes_after,n_hvg,n_pcs,is_targeted_panel
+TENX30,3468,1253,2942,1174,1174,50,True
+TENX31,3468,36601,3463,22181,3000,50,False
+TENX73,10878,18085,10862,18073,3000,50,False

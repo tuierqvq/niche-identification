@@ -1,0 +1,46 @@
+{
+  "reference_h5ad": "/home/yk2/Niche_identification/reference_data/cellxgene_gbmap_core.h5ad",
+  "n_cells": 338564,
+  "n_genes": 27632,
+  "n_count_source_genes": 27632,
+  "cell_type_key": "cell_type",
+  "gene_symbol_key": "feature_name",
+  "n_cell_types": 17,
+  "cell_type_counts": {
+    "malignant cell": 127521,
+    "macrophage": 61134,
+    "microglial cell": 54722,
+    "mature T cell": 54257,
+    "monocyte": 14215,
+    "oligodendrocyte": 12481,
+    "dendritic cell": 3961,
+    "radial glial cell": 2807,
+    "natural killer cell": 2489,
+    "mural cell": 1418,
+    "B cell": 1250,
+    "endothelial cell": 673,
+    "plasma cell": 572,
+    "oligodendrocyte precursor cell": 496,
+    "mast cell": 373,
+    "astrocyte": 173,
+    "neuron": 22
+  },
+  "counts_source": "raw.X",
+  "shared_genes": {
+    "TENX30": {
+      "st_genes": 1253,
+      "shared_genes": 1207,
+      "shared_fraction_of_st": 0.9632881085395052
+    },
+    "TENX31": {
+      "st_genes": 36601,
+      "shared_genes": 19484,
+      "shared_fraction_of_st": 0.5323351820988498
+    },
+    "TENX73": {
+      "st_genes": 18085,
+      "shared_genes": 16216,
+      "shared_fraction_of_st": 0.8966546862040365
+    }
+  }
+}

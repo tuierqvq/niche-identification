@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hest-gbm-niche-pipeline"
+version = "0.1.0"
+description = "HEST GBM Visium niche identification MVP pipeline"
+readme = "docs/run_niche_pipeline.md"
+requires-python = ">=3.10"
+authors = [
+  { name = "Niche Identification Project" }
+]
+
+[project.scripts]
+niche-pipeline = "niche_pipeline.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

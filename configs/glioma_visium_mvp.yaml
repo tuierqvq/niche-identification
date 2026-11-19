@@ -1,0 +1,88 @@
+project:
+  name: hest_gbm_card_mvp
+  random_seed: 42
+
+paths:
+  data_root: HEST_data/hest_gbm_samples
+  output_root: outputs/hest_gbm_card_mvp
+  manifest: outputs/hest_gbm_card_mvp/manifests/selected_samples.csv
+
+samples:
+  - TENX30
+  - TENX31
+  - TENX73
+
+reference:
+  # Provide a GBM/glioma scRNA-seq reference AnnData file before deconvolution.
+  h5ad: reference_data/cellxgene_gbmap_core.h5ad
+  cell_type_key: cell_type
+  batch_key: donor_id
+  counts_layer:
+  gene_symbol_key: feature_name
+
+preprocessing:
+  min_genes_per_spot: 200
+  max_pct_mito: 25
+  min_cells_per_gene: 3
+  target_sum: 10000
+  n_top_genes: 3000
+  n_pcs: 50
+
+deconvolution:
+  method: card
+  # method 可选:
+  # - cell2location: 需要外部 GBM/glioma scRNA-seq reference h5ad。
+  # - card: 标准 CARD，需要同一份 scRNA reference 和 R/CARD。
+  card:
+    rscript_bin: Rscript
+    r_script: scripts/run_card_deconvolution.R
+    min_count_gene: 100
+    min_count_spot: 5
+  # 以下训练/GPU 参数仅供可选 cell2location 后端使用，标准 CARD 不使用这些参数。
+  # scvi-tools 的 PyroSviTrainMixin 使用 accelerator/device；不要直接传 Trainer 的 devices。
+  # 如需换卡，将 device 改为所需的进程内 GPU 编号。
+  # 代码内部会把 GPU 编号转换成 [0] 这类 Lightning 可接受的单卡列表。
+  accelerator: gpu
+  device: 2
+  use_gpu: auto
+  regression_max_epochs: 250
+  spatial_max_epochs: 30000
+  regression_batch_size: 2500
+  spatial_batch_size:
+  train_size: 1.0
+  n_cells_per_location: 8
+  detection_alpha: 20
+  posterior_num_samples: 1000
+  posterior_batch_size: 2500
+
+features:
+  spatial_k: 12
+  sensitivity_k:
+    - 6
+    - 12
+    - 18
+  include_expression_pcs: true
+  n_expression_pcs: 30
+  normalize_abundance_to_composition: true
+  gene_sets: {}
+
+clustering:
+  local_neighbors: 15
+  local_resolution: 0.8
+  global_niches: 8
+  min_spots_per_local_niche: 30
+  min_neighbor_agreement: 0.25
+  random_seed: 42
+
+histology:
+  extract_patches: true
+  patch_size_um: 224
+  output_px: 224
+  max_patches_per_sample: 200
+  contact_sheet_cols: 10
+
+prediction:
+  model: xgboost
+  sample_split: leave_one_sample_out
+  random_seed: 42
+  test_size:
