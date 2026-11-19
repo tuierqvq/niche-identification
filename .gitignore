@@ -3,10 +3,10 @@ __pycache__/
 .pytest_cache/
 *.egg-info/
 .cache/
+/outputs/
 
 # Large data and model files
 *.h5ad
 *.tif
 *.tiff
 *.pt
-/outputs/hest_gbm_mvp/features/TENX73.niche_features.csv

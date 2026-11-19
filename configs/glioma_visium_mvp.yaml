@@ -34,7 +34,7 @@ deconvolution:
   # - cell2location: 需要外部 GBM/glioma scRNA-seq reference h5ad。
   # - card: 标准 CARD，需要同一份 scRNA reference 和 R/CARD。
   card:
-    rscript_bin: Rscript
+    rscript_bin: /data/newhome/yk192/miniconda3/bin/Rscript
     r_script: scripts/run_card_deconvolution.R
     min_count_gene: 100
     min_count_spot: 5

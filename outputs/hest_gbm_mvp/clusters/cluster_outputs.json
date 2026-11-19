@@ -1,6 +1,0 @@
-{
-  "local_labels": "/home/yk2/Niche_identification/outputs/hest_gbm_mvp/clusters/spot_local_niche_labels.csv",
-  "global_labels": "/home/yk2/Niche_identification/outputs/hest_gbm_mvp/clusters/spot_global_niche_labels.csv",
-  "taxonomy": "/home/yk2/Niche_identification/outputs/hest_gbm_mvp/clusters/global_niche_taxonomy.csv",
-  "signatures": "/home/yk2/Niche_identification/outputs/hest_gbm_mvp/clusters/local_niche_signatures.csv"
-}
