@@ -108,10 +108,19 @@ def _write_spatial_overlay(adata: Any, labels: pd.DataFrame, sample_id: str, out
         selected = labels.loc[labels["sample_id"].astype(str) == sample_id].set_index("spot_id")
         sample_labels = sample_labels.join(selected[["global_niche"]], how="left")
     if "global_niche" in sample_labels.columns and sample_labels["global_niche"].notna().any():
-        codes, uniques = pd.factorize(sample_labels["global_niche"].fillna("unlabeled"))
-        scatter = axis.scatter(coords[:, 0], coords[:, 1], c=codes, s=8, cmap="tab20", alpha=0.85)
-        handles, _ = scatter.legend_elements(num=min(len(uniques), 12))
-        axis.legend(handles, list(map(str, uniques[: len(handles)])), loc="best", fontsize=7, frameon=True)
+        from matplotlib.lines import Line2D
+
+        # 所有切片共用同一标签顺序和调色板，避免按各切片首次出现顺序分配颜色。
+        niches = sorted(labels["global_niche"].dropna().astype(str).unique())
+        cmap = plt.get_cmap("tab20", len(niches))
+        palette = {niche: cmap(index) for index, niche in enumerate(niches)}
+        selected_labels = sample_labels["global_niche"].fillna("unlabeled")
+        colors = [palette.get(str(niche), (0.65, 0.65, 0.65, 1)) for niche in selected_labels]
+        axis.scatter(coords[:, 0], coords[:, 1], c=colors, s=8, alpha=0.85)
+        counts = selected_labels.value_counts()
+        handles = [Line2D([0], [0], marker="o", linestyle="", color=palette[niche],
+                          label=f"{niche} (n={int(counts.get(niche, 0))})", markersize=5) for niche in niches]
+        axis.legend(handles=handles, loc="upper left", bbox_to_anchor=(1.01, 1), fontsize=7, frameon=False)
     else:
         axis.scatter(coords[:, 0], coords[:, 1], s=8, color="#cc6677", alpha=0.8)
     axis.set_title(sample_id)

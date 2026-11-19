@@ -65,7 +65,8 @@ def _add_command(
     """注册通用子命令。"""
 
     command = subparsers.add_parser(name, help=help_text)
-    command.add_argument("--config", default=None, help="Pipeline YAML config path.")
+    # 子命令未显式传 --config 时，保留顶层解析器已经接收的路径。
+    command.add_argument("--config", default=argparse.SUPPRESS, help="Pipeline YAML config path.")
     command.set_defaults(handler=handler)
 
 

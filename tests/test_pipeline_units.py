@@ -9,6 +9,7 @@ import pytest
 from scipy import sparse
 
 from niche_pipeline.config import load_config, resolve_path
+from niche_pipeline.cli import build_parser
 from niche_pipeline.graph import build_spatial_knn
 from niche_pipeline.manifest import build_manifest
 from niche_pipeline.model import leave_one_sample_out_splits
@@ -19,6 +20,16 @@ def test_load_config_resolves_project_paths() -> None:
     path = resolve_path(config, "HEST_data")
     assert path is not None
     assert path.name == "HEST_data"
+
+
+@pytest.mark.parametrize("arguments,expected", [
+    (["--config", "cohort.yaml", "preprocess"], "cohort.yaml"),
+    (["preprocess", "--config", "cohort.yaml"], "cohort.yaml"),
+    (["--config", "parent.yaml", "preprocess", "--config", "child.yaml"], "child.yaml"),
+    (["preprocess"], None),
+])
+def test_cli_preserves_config_before_or_after_subcommand(arguments: list[str], expected: str | None) -> None:
+    assert build_parser().parse_args(arguments).config == expected
 
 
 def test_build_manifest_flags_targeted_panel(tmp_path: Path) -> None:
@@ -178,3 +189,29 @@ def test_leave_one_sample_out_has_no_sample_leakage() -> None:
     for train_idx, test_idx, held_out in leave_one_sample_out_splits(samples):
         assert held_out not in set(samples.iloc[train_idx])
         assert set(samples.iloc[test_idx]) == {held_out}
+
+
+def test_preprocessing_preserves_counts_and_unscaled_log_expression(tmp_path: Path) -> None:
+    ad = pytest.importorskip("anndata")
+    from niche_pipeline.preprocessing import preprocess_samples
+
+    rng = np.random.default_rng(42)
+    counts = rng.poisson(3, size=(24, 30)).astype(float)
+    counts[:, 0] += 1
+    data = ad.AnnData(X=sparse.csr_matrix(counts),
+                     obs=pd.DataFrame(index=[f"spot{i}" for i in range(24)]),
+                     var=pd.DataFrame(index=[f"gene{i}" for i in range(30)]))
+    path = tmp_path / "input.h5ad"
+    data.write_h5ad(path)
+    manifest_path = tmp_path / "manifest.csv"
+    pd.DataFrame({"sample_id": ["S1"], "st_path": [str(path)], "metadata_path": ["unused"],
+                  "wsi_path": ["unused"]}).to_csv(manifest_path, index=False)
+    config = {"_project_root": str(tmp_path),
+              "paths": {"manifest": str(manifest_path), "output_root": str(tmp_path / "output")},
+              "preprocessing": {"min_genes_per_spot": 1, "max_pct_mito": 100,
+                                "min_cells_per_gene": 1, "n_top_genes": 15, "n_pcs": 3}}
+    result = ad.read_h5ad(preprocess_samples(config)[0])
+    np.testing.assert_array_equal(result.layers["counts"].toarray(), counts)
+    expected = np.log1p(counts / counts.sum(axis=1, keepdims=True) * 10000)
+    np.testing.assert_allclose(result.raw.X.toarray(), expected)
+    assert not np.allclose(result.X.toarray(), expected)

@@ -1,0 +1,76 @@
+project:
+  name: tenx31_tenx73_card_ischia_20261119_154516
+  random_seed: 42
+paths:
+  data_root: HEST_data/hest_gbm_samples
+  output_root: outputs/tenx31_tenx73_card_ischia_20261119_154516
+  manifest: outputs/tenx31_tenx73_card_ischia_20261119_154516/manifests/selected_samples.csv
+samples:
+- TENX31
+- TENX73
+reference:
+  h5ad: reference_data/cellxgene_gbmap_core.h5ad
+  cell_type_key: cell_type
+  batch_key: donor_id
+  counts_layer: null
+  gene_symbol_key: feature_name
+preprocessing:
+  min_genes_per_spot: 200
+  max_pct_mito: 25
+  min_cells_per_gene: 3
+  target_sum: 10000
+  n_top_genes: 3000
+  n_pcs: 50
+deconvolution:
+  method: card
+  card:
+    rscript_bin: /data/newhome/yk192/miniconda3/bin/Rscript
+    r_script: scripts/run_card_deconvolution.R
+    min_count_gene: 100
+    min_count_spot: 5
+  accelerator: gpu
+  device: 2
+  use_gpu: auto
+  regression_max_epochs: 250
+  spatial_max_epochs: 30000
+  regression_batch_size: 2500
+  spatial_batch_size: null
+  train_size: 1.0
+  n_cells_per_location: 8
+  detection_alpha: 20
+  posterior_num_samples: 1000
+  posterior_batch_size: 2500
+features:
+  spatial_k: 12
+  sensitivity_k:
+  - 6
+  - 12
+  - 18
+  include_expression_pcs: true
+  n_expression_pcs: 30
+  normalize_abundance_to_composition: true
+  gene_sets: {}
+clustering:
+  method: ischia
+  ischia:
+    rscript_bin: /data/newhome/yk192/miniconda3/bin/Rscript
+    r_script: scripts/run_ischia_clustering.R
+    n_clusters: 8
+    elbow_max_k: 0
+  local_neighbors: 15
+  local_resolution: 0.8
+  global_niches: 8
+  min_spots_per_local_niche: 30
+  min_neighbor_agreement: 0.25
+  random_seed: 42
+histology:
+  extract_patches: false
+  patch_size_um: 224
+  output_px: 224
+  max_patches_per_sample: 200
+  contact_sheet_cols: 10
+prediction:
+  model: xgboost
+  sample_split: leave_one_sample_out
+  random_seed: 42
+  test_size: null

@@ -5,6 +5,9 @@ suppressPackageStartupMessages({
 
 args <- commandArgs(trailingOnly = TRUE)
 if (identical(args, "--check")) {
+  if (!requireNamespace("MuSiC", quietly = TRUE)) {
+    stop("MuSiC is required by CARD::createscRef(). Install xuranw/MuSiC in this R environment.")
+  }
   quit(save = "no", status = 0)
 }
 if (length(args) != 11) {

@@ -27,7 +27,10 @@ pip install -e .
 ```r
 install.packages("devtools")
 devtools::install_github("YMa-lab/CARD")
+devtools::install_github("xuranw/MuSiC")
 ```
+
+当前固定版本的 CARD 在参考构建函数中调用 MuSiC，因此该运行时依赖也需要安装。
 
 确认运行环境可用：
 

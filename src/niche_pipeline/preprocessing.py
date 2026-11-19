@@ -70,6 +70,9 @@ def preprocess_samples(config: dict[str, Any], manifest_path: str | Path | None 
         target_sum = float(params.get("target_sum", 10000))
         sc.pp.normalize_total(adata, target_sum=target_sum)
         sc.pp.log1p(adata)
+        # 差异基因分析使用 log-normalized 表达；X 后续会被按基因缩放用于 PCA。
+        # 原始整数计数继续保留在 layers['counts']，供 CARD 使用。
+        adata.raw = adata.copy()
 
         n_top = min(int(params.get("n_top_genes", 3000)), max(1, adata.n_vars))
         if adata.n_vars > 1:
